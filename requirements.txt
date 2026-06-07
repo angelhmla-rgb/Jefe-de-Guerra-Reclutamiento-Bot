@@ -2,5 +2,5 @@ discord.py
 gspread
 google-auth
 pillow
-openpyxl
+gdown
 requests
