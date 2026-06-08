@@ -1,6 +1,5 @@
 discord.py
-gspread
-google-auth
+pandas
 pillow
-gdown
+openpyxl
 requests
