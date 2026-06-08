@@ -117,4 +117,11 @@ async def actualizar_tabla(ctx):
     except Exception as e:
         await ctx.send(f"❌ Error al procesar la limpieza o el tablero: {e}")
 
+@bot.command(name="limpiar")
+async def limpiar_canal(ctx, cantidad: int = 100):
+    """Comando manual para borrar mensajes rápidamente"""
+    if ctx.channel.id != CANAL_ID:
+        return
+    await ctx.channel.purge(limit=cantidad)
+
 bot.run(TOKEN)
