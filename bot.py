@@ -65,15 +65,12 @@ def generar_imagen_reclutamiento():
         clases_texto = str(row['Clase']).strip()
         
         if core_nombre in COORDENADAS_CORES and clases_texto and clases_texto != "nan":
-            # Si dice "Core completo" o "En espera", podríamos manejar texto, 
-            # pero por ahora busquemos iconos separados por comas
             lista_clases = [c.strip() for c in clases_texto.split(",")]
             
             inicio_x, inicio_y = COORDENADAS_CORES[core_nombre]
             posicion_x_actual = inicio_x
             
             for clase_esp in lista_clases:
-                # Ignorar si es un texto plano largo y no un archivo
                 if "_" not in clase_esp and len(clase_esp) > 15:
                     continue
                     
@@ -95,36 +92,29 @@ async def on_ready():
 
 @bot.command(name="reclutamiento")
 async def actualizar_tabla(ctx):
-    """Comando para actualizar la imagen del tablero de anuncios limpiando el anterior"""
-    # Restringir para que solo se pueda usar en el canal de reclutamiento o por admins
+    """Comando para purgar el canal por completo y enviar el tablero nuevo"""
+    # Restringir para que solo se pueda usar en el canal de reclutamiento
     if ctx.channel.id != CANAL_ID:
         return
         
-    # Mensaje temporal que avisa que el bot está procesando los datos
-    status_msg = await ctx.send("⏳ Leyendo Excel y descargando iconos desde GitHub para armar el tablero...")
-    
     try:
-        # 🧹 SECCIÓN LIMPIADORA: Busca y borra el tablero anterior del bot
-        async for message in ctx.channel.history(limit=50):
-            # Si el mensaje fue enviado por este bot Y tiene el texto del título, lo elimina
-            if message.author == bot.user and "¡El Tablero de Reclutamiento" in message.content:
-                try:
-                    await message.delete()
-                    break  # Detiene la búsqueda una vez que borró el último tablero
-                except Exception:
-                    pass  # Si falla por un tema menor de Discord, continúa para no romper el script
-
-        # Genera la nueva imagen
+        # 🧹 PURGA ABSOLUTA: Borra los últimos 99 mensajes del canal (imágenes, textos, comandos)
+        await ctx.channel.purge(limit=100)
+        
+        # Enviamos un mensaje temporal para que los oficiales sepan que está trabajando
+        status_msg = await ctx.send("⏳ Leyendo Google Sheets y generando nuevo tablero limpio...")
+        
+        # Genera la nueva imagen con los iconos frescos
         archivo_imagen = generar_imagen_reclutamiento()
         file = discord.File(archivo_imagen)
         
-        # Envía el nuevo tablero actualizado
-        await ctx.send("⚔️ **¡El Tablero de Reclutamiento de Jefe de Guerra ha sido actualizado!** ⚔️", file=file)
-        
-        # Elimina el mensaje temporal de "⏳ Leyendo Excel..." para que el canal quede limpio
+        # Borramos el mensaje temporal justo antes de mandar el definitivo
         await status_msg.delete()
         
+        # Publicamos el tablero definitivo de la hermandad
+        await ctx.send("⚔️ **¡El Tablero de Reclutamiento de Jefe de Guerra ha sido actualizado!** ⚔️", file=file)
+        
     except Exception as e:
-        await ctx.send(f"❌ Error al generar el tablero: {e}")
+        await ctx.send(f"❌ Error al procesar la limpieza o el tablero: {e}")
 
 bot.run(TOKEN)
