@@ -79,9 +79,9 @@ def generar_imagen_reclutamiento():
                     
                 icono = descargar_icono_github(clase_esp)
                 if icono:
-                    icono = icono.resize((45, 45))  # Tamaño ideal para las franjas
+                    icono = icono.resize((56, 56))  # Tamaño ideal para las franjas
                     imagen_final.paste(icono, (posicion_x_actual, inicio_y), icono)
-                    posicion_x_actual += 55  # Desplazamiento horizontal
+                    posicion_x_actual += 70  # Desplazamiento horizontal
                     
     imagen_final.save(OUTPUT_IMG, "PNG")
     return OUTPUT_IMG
