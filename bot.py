@@ -29,13 +29,13 @@ OUTPUT_IMG = "update_reclutamiento.png"
 
 # Coordenadas estimadas (X, Y) para ubicar los iconos al lado de cada Core
 COORDENADAS_CORES = {
-    "Core 1": (420, 275),
-    "Core 2": (420, 362),
-    "Core 3": (420, 450),
-    "Core 4": (420, 538),
-    "Core 5": (420, 626),
-    "Core 6": (420, 714),
-    "Core 7": (420, 802),
+    "Core 1": (380, 275),
+    "Core 2": (380, 362),
+    "Core 3": (380, 450),
+    "Core 4": (380, 538),
+    "Core 5": (380, 626),
+    "Core 6": (380, 714),
+    "Core 7": (380, 808),
 }
 
 def descargar_icono_github(clase_esp):
