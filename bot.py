@@ -21,7 +21,7 @@ GITHUB_REPO = "Jefe-de-Guerra-Reclutamiento-Bot"
 GITHUB_BRANCH = "main"
 
 URL_BASE_GITHUB = f"https://raw.githubusercontent.com/{GITHUB_USER}/{GITHUB_REPO}/{GITHUB_BRANCH}/iconos"
-PLANTILLA_IMG = "Plantilla_Reclutamiento_Vacia.JPG"
+PLANTILLA_IMG = "Plantilla_Reclutamiento_Con_Cores.JPG"
 # Reemplaza el texto de abajo con el ID largo de tu Google Sheet
 GOOGLE_SHEET_ID = "1OfrieToO_D7RfNZbC79wvhCweViOBg8qNqHJh-uefFk"
 URL_GOOGLE_SHEET = f"https://docs.google.com/spreadsheets/d/{GOOGLE_SHEET_ID}/export?format=xlsx"
