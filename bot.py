@@ -10,7 +10,7 @@ TOKEN = os.getenv("DISCORD_TOKEN")
 # Tu ID de canal donde se envía el mensaje automático y el tablero final
 CANAL_ID = 1513230063225671750 
 
-intents = discord.Intents.default()
+intents = discord.Intents.all()
 intents.message_content = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
