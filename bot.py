@@ -95,17 +95,35 @@ async def on_ready():
 
 @bot.command(name="reclutamiento")
 async def actualizar_tabla(ctx):
-    """Comando para actualizar la imagen del tablero de anuncios"""
+    """Comando para actualizar la imagen del tablero de anuncios limpiando el anterior"""
     # Restringir para que solo se pueda usar en el canal de reclutamiento o por admins
     if ctx.channel.id != CANAL_ID:
         return
         
-    await ctx.send("⏳ Leyendo Excel y descargando iconos desde GitHub para armar el tablero...")
+    # Mensaje temporal que avisa que el bot está procesando los datos
+    status_msg = await ctx.send("⏳ Leyendo Excel y descargando iconos desde GitHub para armar el tablero...")
     
     try:
+        # 🧹 SECCIÓN LIMPIADORA: Busca y borra el tablero anterior del bot
+        async for message in ctx.channel.history(limit=50):
+            # Si el mensaje fue enviado por este bot Y tiene el texto del título, lo elimina
+            if message.author == bot.user and "¡El Tablero de Reclutamiento" in message.content:
+                try:
+                    await message.delete()
+                    break  # Detiene la búsqueda una vez que borró el último tablero
+                except Exception:
+                    pass  # Si falla por un tema menor de Discord, continúa para no romper el script
+
+        # Genera la nueva imagen
         archivo_imagen = generar_imagen_reclutamiento()
         file = discord.File(archivo_imagen)
+        
+        # Envía el nuevo tablero actualizado
         await ctx.send("⚔️ **¡El Tablero de Reclutamiento de Jefe de Guerra ha sido actualizado!** ⚔️", file=file)
+        
+        # Elimina el mensaje temporal de "⏳ Leyendo Excel..." para que el canal quede limpio
+        await status_msg.delete()
+        
     except Exception as e:
         await ctx.send(f"❌ Error al generar el tablero: {e}")
 
